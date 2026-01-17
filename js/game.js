@@ -34,16 +34,32 @@ class PokebirdsGame {
 
     init() {
         // Set up event listeners
-        this.splashScreen.addEventListener('click', () => this.startGame());
-        this.splashScreen.addEventListener('touchstart', () => this.startGame());
+        const subtitle = this.splashScreen.querySelector('.subtitle');
+
+        const handleSplashClick = () => {
+            // On first interaction, initialize audio and start splash music
+            if (!audioSystem.initialized) {
+                audioSystem.init();
+                audioSystem.resume();
+                audioSystem.playChiptuneBG();
+                // Update subtitle to indicate they can now start
+                subtitle.textContent = 'Tap again to play!';
+                // Don't start game yet - let them hear the music
+                return;
+            }
+            // On subsequent clicks, start the game
+            this.startGame();
+        };
+
+        this.splashScreen.addEventListener('click', handleSplashClick);
+        this.splashScreen.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleSplashClick();
+        });
     }
 
     startGame() {
         if (this.state !== GameStates.SPLASH) return;
-
-        // Initialize audio on first user interaction
-        audioSystem.init();
-        audioSystem.resume();
 
         // Start game background music
         audioSystem.playGameBG();

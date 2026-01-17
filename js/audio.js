@@ -22,9 +22,17 @@ class AudioSystem {
 
         try {
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            // Create separate gain nodes for SFX and music
             this.masterGain = this.audioContext.createGain();
             this.masterGain.gain.value = 0.3; // Master volume at 30%
             this.masterGain.connect(this.audioContext.destination);
+
+            // Background music has its own persistent gain node
+            this.bgMusicGain = this.audioContext.createGain();
+            this.bgMusicGain.gain.value = 0.12;
+            this.bgMusicGain.connect(this.audioContext.destination);
+
             this.initialized = true;
         } catch (error) {
             console.warn('Web Audio API not supported:', error);
@@ -201,39 +209,74 @@ class AudioSystem {
 
     /**
      * Play procedural chiptune background music (splash screen)
+     * Melodic pattern with chord progression
      */
     playChiptuneBG() {
         this.stopBackgroundMusic();
-        if (!this.initialized || this.muted) return;
+        if (!this.initialized || this.muted || !this.bgMusicGain) return;
 
         this.currentMusicType = 'chiptune';
-        this.bgMusicGain = this.audioContext.createGain();
-        this.bgMusicGain.gain.value = 0.15; // Quieter than SFX
-        this.bgMusicGain.connect(this.masterGain);
 
-        // Chiptune arpeggio pattern: C-E-G-C loop
-        const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+        // Melodic progression: C major - G major - A minor - F major (I-V-vi-IV progression)
+        // 32-note loop with melody over bass
+        const melodyPattern = [
+            523.25, 659.25, 783.99, 659.25, // C5, E5, G5, E5 (C major)
+            587.33, 783.99, 880.00, 783.99, // D5, G5, A5, G5 (G major)
+            523.25, 659.25, 880.00, 659.25, // C5, E5, A5, E5 (A minor)
+            698.46, 880.00, 1046.5, 880.00, // F5, A5, C6, A5 (F major)
+            // Repeat with variation
+            523.25, 659.25, 783.99, 880.00, // C5, E5, G5, A5
+            587.33, 783.99, 932.33, 783.99, // D5, G5, Bb5, G5
+            523.25, 659.25, 880.00, 1046.5, // C5, E5, A5, C6
+            698.46, 880.00, 783.99, 659.25  // F5, A5, G5, E5
+        ];
+
+        const bassPattern = [
+            261.63, 261.63, 261.63, 261.63, // C3
+            196.00, 196.00, 196.00, 196.00, // G3
+            220.00, 220.00, 220.00, 220.00, // A3
+            174.61, 174.61, 174.61, 174.61, // F3
+            261.63, 261.63, 261.63, 261.63, // C3
+            196.00, 196.00, 196.00, 196.00, // G3
+            220.00, 220.00, 220.00, 220.00, // A3
+            174.61, 174.61, 174.61, 174.61  // F3
+        ];
+
         let noteIndex = 0;
 
         this.musicInterval = setInterval(() => {
-            if (!this.initialized || this.muted) return;
+            if (!this.initialized || this.muted || !this.bgMusicGain) return;
 
-            const osc = this.audioContext.createOscillator();
-            osc.type = 'square'; // Chiptune sound
-            osc.frequency.value = notes[noteIndex % notes.length];
+            const idx = noteIndex % melodyPattern.length;
 
-            const gain = this.audioContext.createGain();
-            gain.gain.value = 0.3;
-            gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+            // Melody voice
+            const melody = this.audioContext.createOscillator();
+            melody.type = 'square';
+            melody.frequency.value = melodyPattern[idx];
+            const melGain = this.audioContext.createGain();
+            melGain.gain.value = 0.18;
+            melGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.25);
+            melody.connect(melGain);
+            melGain.connect(this.bgMusicGain);
+            melody.start();
+            melody.stop(this.audioContext.currentTime + 0.25);
 
-            osc.connect(gain);
-            gain.connect(this.bgMusicGain);
-
-            osc.start();
-            osc.stop(this.audioContext.currentTime + 0.3);
+            // Bass voice (every other note for rhythm)
+            if (idx % 2 === 0) {
+                const bass = this.audioContext.createOscillator();
+                bass.type = 'triangle';
+                bass.frequency.value = bassPattern[idx];
+                const bassGain = this.audioContext.createGain();
+                bassGain.gain.value = 0.22;
+                bassGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+                bass.connect(bassGain);
+                bassGain.connect(this.bgMusicGain);
+                bass.start();
+                bass.stop(this.audioContext.currentTime + 0.3);
+            }
 
             noteIndex++;
-        }, 200); // 8th note at 150 BPM
+        }, 180); // Slightly faster tempo for energy
     }
 
     /**
@@ -241,12 +284,9 @@ class AudioSystem {
      */
     playGameBG() {
         this.stopBackgroundMusic();
-        if (!this.initialized || this.muted) return;
+        if (!this.initialized || this.muted || !this.bgMusicGain) return;
 
         this.currentMusicType = 'game';
-        this.bgMusicGain = this.audioContext.createGain();
-        this.bgMusicGain.gain.value = 0.12;
-        this.bgMusicGain.connect(this.masterGain);
 
         // Upbeat rhythm: bass + melody
         const bassNotes = [130.81, 164.81]; // C3, E3 alternating
@@ -254,7 +294,7 @@ class AudioSystem {
 
         let beat = 0;
         this.musicInterval = setInterval(() => {
-            if (!this.initialized || this.muted) return;
+            if (!this.initialized || this.muted || !this.bgMusicGain) return;
 
             // Bass on every beat
             if (beat % 2 === 0) {
@@ -331,19 +371,9 @@ class AudioSystem {
             clearInterval(this.musicInterval);
             this.musicInterval = null;
         }
-        if (this.bgMusicGain) {
-            this.bgMusicGain.gain.exponentialRampToValueAtTime(
-                0.01,
-                this.audioContext.currentTime + 0.5
-            );
-            setTimeout(() => {
-                if (this.bgMusicGain) {
-                    this.bgMusicGain.disconnect();
-                    this.bgMusicGain = null;
-                }
-            }, 500);
-        }
-        this.bgOscillators = [];
+        // Don't disconnect bgMusicGain - it's persistent
+        // Just stop generating new notes by clearing the interval
+        this.currentMusicType = null;
     }
 
     /**

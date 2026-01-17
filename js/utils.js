@@ -71,14 +71,23 @@ function pointInElement(x, y, element) {
 
 /**
  * Generate random position that doesn't overlap with existing birds
+ * Now enforces 80% on-screen visibility (20% margin from edges)
  */
 function generateSafePosition(containerWidth, containerHeight, birdWidth, birdHeight, existingBirds = []) {
     const maxAttempts = 50;
     let attempt = 0;
 
+    // Calculate 80% visible area (20% margin on each side)
+    const marginX = birdWidth * 0.2;
+    const marginY = birdHeight * 0.2;
+    const minX = marginX;
+    const maxX = containerWidth - marginX;
+    const minY = marginY;
+    const maxY = containerHeight - marginY;
+
     while (attempt < maxAttempts) {
-        const x = randomInt(birdWidth / 2, containerWidth - birdWidth / 2);
-        const y = randomInt(birdHeight / 2, containerHeight - birdHeight / 2);
+        const x = randomInt(minX, maxX);
+        const y = randomInt(minY, maxY);
 
         const newRect = {
             left: x - birdWidth / 2,
@@ -106,10 +115,10 @@ function generateSafePosition(containerWidth, containerHeight, birdWidth, birdHe
         attempt++;
     }
 
-    // If we couldn't find a non-overlapping position, return random position anyway
+    // If we couldn't find a non-overlapping position, return random position anyway (still 80% visible)
     return {
-        x: randomInt(birdWidth / 2, containerWidth - birdWidth / 2),
-        y: randomInt(birdHeight / 2, containerHeight - birdHeight / 2)
+        x: randomInt(minX, maxX),
+        y: randomInt(minY, maxY)
     };
 }
 

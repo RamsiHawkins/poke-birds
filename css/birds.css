@@ -66,19 +66,20 @@
 /* Speech Bubble */
 .speech-bubble {
     position: absolute;
-    top: -60px; /* Increased from -50px to accommodate larger text */
+    top: -55px;
     left: 50%;
     transform: translateX(-50%);
     background: white;
     border: 2px solid #333;
-    border-radius: 12px;
-    padding: 8px 12px;
-    font-size: 0.85rem; /* Increased from 0.75rem */
+    border-radius: 10px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
     font-weight: 600;
-    white-space: normal; /* Changed from nowrap - allow wrapping */
-    max-width: 300px; /* Constrain width for wrapping */
+    white-space: normal;
+    min-width: 200px;
+    max-width: 400px; /* Much wider - encourages 1-2 lines */
     word-wrap: break-word;
-    line-height: 1.3;
+    line-height: 1.25; /* Tighter line height */
     text-align: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     z-index: 100;
@@ -209,10 +210,11 @@
     }
 
     .speech-bubble {
-        font-size: 0.75rem; /* Increased from 0.65rem */
-        padding: 6px 10px;
-        top: -55px;
-        max-width:300px;
+        font-size: 0.72rem;
+        padding: 5px 12px;
+        top: -50px;
+        min-width: 180px;
+        max-width: 350px;
     }
 }
 
@@ -223,9 +225,10 @@
     }
 
     .speech-bubble {
-        font-size: 0.7rem; /* Increased from 0.6rem */
-        padding: 5px 8px;
-        top: -50px;
+        font-size: 0.68rem;
+        padding: 4px 10px;
+        top: -45px;
+        min-width: 160px;
         max-width: 300px;
     }
 }
