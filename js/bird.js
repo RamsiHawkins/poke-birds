@@ -92,7 +92,6 @@ const SPECIES_PERSONALITIES = {
             "Your shoes look expensive... SPLAT!",
             "I run this town, you just visit!",
             "You couldn't survive one day as me!",
-            "Gentrifier detected, ATTACK MODE!",
             "I was here first, GET OUT!",
             "You're just a walking food source!"
         ],
@@ -101,7 +100,6 @@ const SPECIES_PERSONALITIES = {
             "You're getting the whole swarm!",
             "I'm calling my COUSINS!",
             "Your car's getting BOMBED!",
-            "Street code says you DIE!",
             "We NEVER forget, NEVER!"
         ]
     },
@@ -153,7 +151,6 @@ const SPECIES_PERSONALITIES = {
             "You're getting SWARMED!",
             "FIGHT ME, coward!",
             "The whole BEACH is coming!",
-            "You just signed your DEATH WARRANT!",
             "I'm eating your LEFTOVERS!"
         ]
     },
