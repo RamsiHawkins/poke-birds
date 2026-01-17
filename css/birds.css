@@ -1,0 +1,277 @@
+/* Bird Container */
+.bird {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transform-origin: center;
+    will-change: transform, opacity;
+}
+
+/* Bird SVG Wrapper */
+.bird-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Species-specific sizing (colors are inline) */
+.bird.bird-crow {
+    width: 90px;
+    height: 90px;
+}
+
+.bird.bird-duck {
+    width: 85px;
+    height: 75px;
+}
+
+.bird.bird-robin {
+    width: 70px;
+    height: 70px;
+}
+
+.bird.bird-pigeon {
+    width: 80px;
+    height: 80px;
+}
+
+.bird.bird-sparrow {
+    width: 75px;
+    height: 75px;
+}
+
+/* Bird State Animations */
+.bird.idle {
+    animation: bird-bob 2s ease-in-out infinite;
+}
+
+.bird.poked {
+    animation: bird-poked 0.5s ease-out forwards;
+}
+
+.bird.despawning {
+    animation: bird-despawn 0.5s ease-in forwards;
+}
+
+.bird.flipping-off .bird-wing-left {
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.bird.flipping-off {
+    animation: bird-flip-shake 0.4s ease-in-out infinite;
+}
+
+/* Speech Bubble */
+.speech-bubble {
+    position: absolute;
+    top: -60px; /* Increased from -50px to accommodate larger text */
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 0.85rem; /* Increased from 0.75rem */
+    font-weight: 600;
+    white-space: normal; /* Changed from nowrap - allow wrapping */
+    max-width: 300px; /* Constrain width for wrapping */
+    word-wrap: break-word;
+    line-height: 1.3;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    animation: speech-appear 0.3s ease-out;
+    pointer-events: none;
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #333;
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 9px solid white;
+    z-index: 1;
+}
+
+/* Bird Animations */
+@keyframes bird-bob {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-5px) rotate(-2deg);
+    }
+    75% {
+        transform: translateY(5px) rotate(2deg);
+    }
+}
+
+@keyframes bird-poked {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(0.8) rotate(-15deg);
+    }
+    100% {
+        transform: scale(0.9) rotate(10deg);
+    }
+}
+
+@keyframes bird-despawn {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0) rotate(360deg);
+    }
+}
+
+@keyframes bird-flip-shake {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(-3px) rotate(-3deg);
+    }
+    75% {
+        transform: translateX(3px) rotate(3deg);
+    }
+}
+
+@keyframes speech-appear {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+
+/* Wing Flutter Animation */
+@keyframes wing-flap {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(-15deg);
+    }
+}
+
+.bird.idle .bird-wing {
+    animation: wing-flap 0.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+/* Flip-off Wing Animation */
+.bird.flipping-off .bird-wing-left {
+    animation: flip-off-extend 0.5s ease-out forwards;
+}
+
+@keyframes flip-off-extend {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-90deg) scaleY(1.3);
+    }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .bird {
+        width: 70px;
+        height: 70px;
+    }
+
+    .speech-bubble {
+        font-size: 0.75rem; /* Increased from 0.65rem */
+        padding: 6px 10px;
+        top: -55px;
+        max-width:300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bird {
+        width: 60px;
+        height: 60px;
+    }
+
+    .speech-bubble {
+        font-size: 0.7rem; /* Increased from 0.6rem */
+        padding: 5px 8px;
+        top: -50px;
+        max-width: 300px;
+    }
+}
+
+/* Species-specific sizing */
+.bird-seagull {
+    width: 85px;
+    height: 85px;
+}
+
+.bird-hummingbird {
+    width: 60px;
+    height: 60px;
+}
+
+.bird-owl {
+    width: 90px;
+    height: 95px;
+}
+
+/* Hummingbird fast wing animation */
+.bird-hummingbird .bird-wing {
+    animation: wing-flap 0.2s ease-in-out infinite !important;
+}
+
+/* Species-specific poke reactions */
+.bird-sparrow.poked {
+    animation: panicked-spin 0.5s ease-out;
+}
+
+.bird-crow.poked {
+    animation: angry-flash 0.5s ease-out;
+}
+
+.bird-duck.poked {
+    animation: lazy-wobble 0.5s ease-out;
+}
+
+.bird-seagull.poked {
+    animation: aggressive-lunge 0.5s ease-out;
+}
+
+.bird-hummingbird.poked {
+    animation: ultra-fast-spin 0.3s ease-out;
+}
+
+.bird-owl.poked {
+    animation: shocked-blink 0.5s ease-out;
+}

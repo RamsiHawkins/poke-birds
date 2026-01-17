@@ -1,0 +1,278 @@
+/* Screen Transition Animations */
+.fade-in {
+    animation: fade-in 0.5s ease-in forwards;
+}
+
+.fade-out {
+    animation: fade-out 0.5s ease-out forwards;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Crossfade Transition */
+.crossfade-out {
+    animation: crossfade-out 1s ease-in-out forwards;
+}
+
+@keyframes crossfade-out {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+        background: #000;
+    }
+    100% {
+        opacity: 0;
+        background: transparent;
+    }
+}
+
+/* Spawn Animation */
+.spawning {
+    animation: spawn-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes spawn-in {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(-180deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Poke Impact Effect */
+.poke-impact {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+    pointer-events: none;
+    animation: impact-burst 0.4s ease-out forwards;
+}
+
+@keyframes impact-burst {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+
+/* Impact Glow Effect */
+@keyframes impact-glow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 212, 163, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 20px 10px rgba(255, 212, 163, 0);
+    }
+}
+
+/* Screen Shake (for finale intensity) */
+.screen-shake {
+    animation: screen-shake 0.5s ease-in-out infinite;
+}
+
+@keyframes screen-shake {
+    0%, 100% {
+        transform: translateX(0) translateY(0);
+    }
+    10% {
+        transform: translateX(-5px) translateY(-5px);
+    }
+    20% {
+        transform: translateX(5px) translateY(5px);
+    }
+    30% {
+        transform: translateX(-5px) translateY(5px);
+    }
+    40% {
+        transform: translateX(5px) translateY(-5px);
+    }
+    50% {
+        transform: translateX(-5px) translateY(-5px);
+    }
+    60% {
+        transform: translateX(5px) translateY(5px);
+    }
+    70% {
+        transform: translateX(-5px) translateY(5px);
+    }
+    80% {
+        transform: translateX(5px) translateY(-5px);
+    }
+    90% {
+        transform: translateX(-5px) translateY(-5px);
+    }
+}
+
+/* Text Pop Animation */
+.pop-in {
+    animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes pop-in {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Wiggle Animation */
+.wiggle {
+    animation: wiggle 0.3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+/* Flash Effect */
+.flash {
+    animation: flash 0.5s ease-in-out;
+}
+
+@keyframes flash {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Rotate Animation */
+.rotate-in {
+    animation: rotate-in 0.6s ease-out forwards;
+}
+
+@keyframes rotate-in {
+    0% {
+        transform: rotate(-180deg) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Slide In From Top */
+.slide-in-top {
+    animation: slide-in-top 0.5s ease-out forwards;
+}
+
+@keyframes slide-in-top {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Slide Out Bottom */
+.slide-out-bottom {
+    animation: slide-out-bottom 0.5s ease-in forwards;
+}
+
+@keyframes slide-out-bottom {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+/* Species-specific poke reaction keyframes */
+@keyframes panicked-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-90deg) scale(1.15); }
+    50% { transform: rotate(-180deg) scale(1.2); }
+    75% { transform: rotate(-270deg) scale(1.15); }
+    100% { transform: rotate(-360deg) scale(1); }
+}
+
+@keyframes angry-flash {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.5) saturate(1.5); }
+}
+
+@keyframes lazy-wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg) translateY(5px); }
+    75% { transform: rotate(5deg) translateY(5px); }
+}
+
+@keyframes aggressive-lunge {
+    0% { transform: translateX(0); }
+    30% { transform: translateX(15px) scale(1.2); }
+    100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes ultra-fast-spin {
+    0% { transform: rotate(0deg); filter: blur(0); }
+    50% { filter: blur(3px); }
+    100% { transform: rotate(720deg); filter: blur(0); }
+}
+
+@keyframes shocked-blink {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+}
+
+/* Performance Optimization Hints */
+.bird,
+.screen {
+    will-change: transform, opacity;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
